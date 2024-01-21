@@ -5,11 +5,13 @@ import InterviewStart from "./components/InterviewStart/InterviewStart";
 import InterviewQuestions from "./components/InterviewQuestions/InterviewQuestions";
 import InterviewHistory from "./components/InterviewHistory/InterviewHistory";
 import InterviewResult from "./components/InterviewResult/InterviewResult";
+import UserProfile from "./components/UserProfile/UserProfile";
 
 import "./App.css";
 
 const App = () => {
   const CURRENTSCREEN = <InterviewStart />;
+  // const CURRENTSCREEN = <UserProfile />;
   const sideScreenStyle = {
     borderRadius: "12px",
     background: "rgba(217, 217, 217, 0.2)",
