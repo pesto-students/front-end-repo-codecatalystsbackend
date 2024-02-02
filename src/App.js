@@ -1,19 +1,26 @@
 import React from "react";
-import Header from "./components/Header/Header";
-import ProfileBar from "./components/ProfileBar/ProfileBar";
-import InterviewStart from "./components/InterviewStart/InterviewStart";
-import InterviewQuestions from "./components/InterviewQuestions/InterviewQuestions";
-import InterviewHistory from "./components/InterviewHistory/InterviewHistory";
-import InterviewResult from "./components/InterviewResult/InterviewResult";
+import Header from "./components/Header";
+import ProfileBar from "./components/ProfileBar";
+
+import { Route, Switch } from "react-router-dom";
 
 import "./App.css";
+import LandingPage from "./components/LandingPage";
+import Loader from "./components/Loader";
+import UserProfile from "./components/UserProfile";
+import PasswordChange from "./components/PasswordChange";
 
 const App = () => {
-  const CURRENTSCREEN = <InterviewStart />;
+  // const CURRENTSCREEN = (
+  //   <Loader loaderText={"Processing Interview Questions..."} />
+  // );
+  const CURRENTSCREEN = <PasswordChange />;
   const sideScreenStyle = {
     borderRadius: "12px",
     background: "rgba(217, 217, 217, 0.2)",
   };
+
+  // return <LandingPage currentRoute={"login"} />;
 
   return (
     <div className="appContainer">

@@ -1,8 +1,11 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 import styles from "./interviewstart.module.scss";
 
 function InterviewStart() {
+  const params = useParams()
+  console.log(params)
   const instructions = [
     "Each questions have 4 Options",
     "You can skip any questions for answer latter",
