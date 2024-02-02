@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Link } from "react-router-dom";
+
 import styles from "./landingpage.module.scss";
 import Header from "../Header";
 import LandingPageImage from "../../assets/pngs/landing_page.png";
@@ -26,7 +28,7 @@ function LandingPage({ currentRoute }) {
           Empowering job seekers by honing interview skills and linking them to
           fitting roles.
         </p>
-        <button>Let's Start</button>
+        {!currentRoute && <Link to="/signup">Let's Start</Link>}
       </div>
       <div className={styles.bottomCardsContainer}>
         <div className={styles.bottomCard}>

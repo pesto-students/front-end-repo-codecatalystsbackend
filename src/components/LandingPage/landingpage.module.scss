@@ -47,7 +47,7 @@
       font-weight: 700;
     }
 
-    button {
+    a {
       padding: 12px;
       width: 10vw;
       font-weight: 18px;
@@ -55,6 +55,9 @@
       cursor: pointer;
       background-color: #fff;
       border: none;
+      text-decoration: none;
+      color: #000;
+      text-align: center;
     }
   }
 

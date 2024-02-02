@@ -13,7 +13,8 @@
     color: #fff;
   }
 
-  button {
+  button,
+  a {
     background-color: var(--yellow);
     padding: 12px 0;
     font-size: 18px;
@@ -46,9 +47,10 @@
       font-weight: 600;
     }
 
-    button {
+    a {
       background-color: transparent;
       color: var(--yellow);
+      text-decoration: none;
     }
   }
 }

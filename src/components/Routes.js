@@ -12,11 +12,15 @@ import PasswordChange from "./PasswordChange";
 import useAuth from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 
-const WrapperComponent = ({ Component, ...props }) => {
+export const WrapperComponent = ({
+  Component,
+  redirectPath = "/login",
+  ...props
+}) => {
   const { user } = useAuth();
 
   if (!user) {
-    return <Navigate to="/login" replace={true} />;
+    return <Navigate to={redirectPath} replace={true} />;
   }
   return (
     <Wrapper>
@@ -25,7 +29,7 @@ const WrapperComponent = ({ Component, ...props }) => {
   );
 };
 
-let Routes = [
+const Routes = [
   {
     path: "/",
     element: <App />,

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./signupsignin.module.scss";
 
@@ -21,6 +22,7 @@ function SignUpSignIn({ currentRoute }) {
       };
     });
   };
+
   return (
     <div className={styles.signUpSignInContainer}>
       <h3>{text}</h3>
@@ -59,7 +61,9 @@ function SignUpSignIn({ currentRoute }) {
             ? "Don’t have an account?"
             : "Already have an account?"}
         </p>
-        <button>{currentRoute === "login" ? "Sign up" : "Log in"}</button>
+        <Link to={currentRoute === "login" ? "/signup" : "/login"}>
+          {currentRoute === "login" ? "Sign up" : "Log in"}
+        </Link>
       </div>
     </div>
   );
