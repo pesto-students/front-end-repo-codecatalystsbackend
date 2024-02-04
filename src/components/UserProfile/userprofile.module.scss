@@ -63,7 +63,8 @@
     display: flex;
     gap: 20px;
 
-    button {
+    button,
+    a {
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -71,6 +72,8 @@
       padding: 12px 20px;
       font-size: 18px;
       font-weight: 600;
+      text-decoration: none;
+      color: #000;
 
       &:nth-child(2) {
         background-color: #f6f6f6;

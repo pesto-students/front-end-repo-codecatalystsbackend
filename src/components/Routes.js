@@ -43,7 +43,7 @@ const Routes = [
     element: <SignUpPage />,
   },
   {
-    path: "/start/:id",
+    path: "/start",
     element: <WrapperComponent Component={InterviewStart} />,
   },
   {

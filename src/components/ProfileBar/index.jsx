@@ -1,36 +1,60 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
 import styles from "./profilebar.module.scss";
+import { Link, useLocation } from "react-router-dom";
 
 function ProfileBar() {
+  const { user, setUser } = useContext(AppContext);
+
+  const handleLogout = () => {
+    setUser(undefined);
+    localStorage.removeItem("TBuser");
+  };
   return (
     <div className={styles.sideProfileContainer}>
       <ProfileCard />
       <CurrentPage />
       <div className={styles.logoutButton}>
-        <button>Logout</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );
 }
 
 const ProfileCard = () => {
+  const { user } = useContext(AppContext);
   return (
     <div className={styles.profileCardContainer}>
       <div className={styles.imageContainer}>{/* <img /> */}</div>
-      <p>Sarthak</p>
-      <span>sarthakg.developer@gmail.com</span>
+      <p>
+        {user.firstname} {user.lastname}
+      </p>
+      <span>{user.email}</span>
     </div>
   );
 };
 
 const CurrentPage = () => {
-  const totalPages = ["Dashboard", "Accounts", "Settings"];
+  const location = useLocation();
+  const totalPages = [
+    { section: "Dashboard", url: "/" },
+    { section: "Profile", url: "/user" },
+  ];
   return (
     <div className={styles.pagesContainer}>
       {totalPages.map((page, index) => (
         <div key={index}>
-          <p>{page}</p>
+          <Link
+            to={page.url}
+            style={
+              page.url === location.pathname
+                ? { fontSize: "22px", color: "#fff" }
+                : {}
+            }
+          >
+            {page.section}
+          </Link>
         </div>
       ))}
     </div>

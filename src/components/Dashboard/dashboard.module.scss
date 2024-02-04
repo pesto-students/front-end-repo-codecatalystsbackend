@@ -18,7 +18,7 @@
       width: 200px;
       height: 48px;
 
-      button {
+      a {
         height: 100%;
         width: 100%;
         background-color: var(--yellow);
@@ -27,6 +27,9 @@
         border: none;
         border-radius: 10px;
         cursor: pointer;
+        text-decoration: none;
+        color: #000;
+        padding: 12px 18px;
       }
     }
 

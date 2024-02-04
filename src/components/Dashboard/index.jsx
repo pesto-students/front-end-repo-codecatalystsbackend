@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "./dashboard.module.scss";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const recInterviewList = [
@@ -39,7 +40,7 @@ function Dashboard() {
     <div className={styles.dashboardContainer}>
       <div className={styles.currentInterviewsContainer}>
         <div className={styles.buttonContainer}>
-          <button>Start Interview</button>
+          <Link to="/start">Start Interview</Link>
         </div>
         {previousInterviewList?.length > 0 && (
           <div className={styles.previousResultsContainer}>

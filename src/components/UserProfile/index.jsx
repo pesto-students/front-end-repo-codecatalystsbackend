@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import styles from "./userprofile.module.scss";
+import { Link } from "react-router-dom";
+import { updateUser } from "../../apis/userApis";
+import { AppContext } from "../../context/AppContext";
 
 function UserProfile() {
+  const { user, setUser } = useContext(AppContext);
   const [userInfo, setUserInfo] = useState({
-    name: "",
-    email: "",
+    name: `${user.firstname} ${user.lastname}`,
+    email: user.email,
     skills: "",
   });
   const handleOnChange = (e) => {
@@ -18,6 +22,30 @@ function UserProfile() {
         [name]: value,
       };
     });
+  };
+  const handleSubmit = async () => {
+    let { name, email, skills } = userInfo;
+    if (!name || !email) {
+      return alert("please enter valid details");
+    }
+    skills = skills.split(",");
+    let fullname = name.split(" ");
+    const payload = {
+      firstname: fullname[0],
+      lastname: fullname[1],
+      email,
+      skills,
+    };
+    const res = await updateUser(user.id, payload);
+    if (res) {
+      const updatedData = {
+        ...payload,
+        id: user.id,
+        access_token: user.access_token,
+      };
+      localStorage.setItem('TBuser', JSON.stringify(updatedData))
+      setUser({ ...payload, id: user.id, access_token: user.access_token });
+    }
   };
   return (
     <div className={styles.userProfileContainer}>
@@ -52,8 +80,8 @@ function UserProfile() {
           />
         </div>
         <div className={styles.btnsContainer}>
-          <button>Save</button>
-          <button>Update Password</button>
+          <button onClick={handleSubmit}>Save</button>
+          <Link to="/reset"> Update Password</Link>
         </div>
       </div>
       <div className={styles.userImageContainer}>
