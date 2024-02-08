@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { resetPassword } from "../../apis/userApis";
+import useAuth from "../../hooks/useAuth";
 
 import styles from "./passwordchange.module.scss";
 
 function PasswordChange() {
+  const { user } = useAuth();
   const [userInfo, setUserInfo] = useState({
     currentPassword: "",
     newPassword: "",
@@ -19,6 +22,21 @@ function PasswordChange() {
         [name]: value,
       };
     });
+  };
+  const handleSubmit = async () => {
+    const { currentPassword, newPassword, confirmPassword } = userInfo;
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return alert("Please fill all the details");
+    }
+    if (newPassword !== confirmPassword) {
+      return alert("Passwords do not match");
+    }
+    const res = await resetPassword(user.id, {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+    console.log(res, "res");
   };
   return (
     <div className={styles.passwordChangeContainer}>
@@ -48,7 +66,7 @@ function PasswordChange() {
         type="password"
       />
 
-      <button>Update</button>
+      <button onClick={handleSubmit}>Update</button>
     </div>
   );
 }

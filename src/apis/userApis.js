@@ -3,7 +3,7 @@ import axios from "axios";
 export const signUpUser = async (payload) => {
   try {
     const res = await axios.post("/v1/api/users", payload);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       return res.data;
     }
   } catch (error) {
@@ -14,7 +14,7 @@ export const signUpUser = async (payload) => {
 export const loginUser = async (payload) => {
   try {
     const res = await axios.post("/v1/api/user/login", payload);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       return res.data;
     }
   } catch (error) {
@@ -35,7 +35,7 @@ export const updateUser = async (id, payload) => {
 
 export const resetPassword = async (id, payload) => {
   try {
-    const res = await axios.post(`/v1/api/users/${id}/reset`, payload);
+    const res = await axios.post(`/v1/api/user/${id}/reset`, payload);
     if (res) {
       return res;
     }

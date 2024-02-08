@@ -10,7 +10,7 @@ function UserProfile() {
   const [userInfo, setUserInfo] = useState({
     name: `${user.firstname} ${user.lastname}`,
     email: user.email,
-    skills: "",
+    skills: user.skills?.join(", ") || "",
   });
   const handleOnChange = (e) => {
     const {
@@ -28,7 +28,7 @@ function UserProfile() {
     if (!name || !email) {
       return alert("please enter valid details");
     }
-    skills = skills.split(",");
+    skills = skills.replace(/ /g, "").split(",");
     let fullname = name.split(" ");
     const payload = {
       firstname: fullname[0],
@@ -43,7 +43,7 @@ function UserProfile() {
         id: user.id,
         access_token: user.access_token,
       };
-      localStorage.setItem('TBuser', JSON.stringify(updatedData))
+      localStorage.setItem("TBuser", JSON.stringify(updatedData));
       setUser({ ...payload, id: user.id, access_token: user.access_token });
     }
   };

@@ -6,7 +6,6 @@ import Dashboard from "./components/Dashboard";
 import Wrapper from "./components/Wrapper";
 
 import useAuth from "./hooks/useAuth";
-import "./Interceptors";
 
 const App = () => {
   const { user } = useAuth();

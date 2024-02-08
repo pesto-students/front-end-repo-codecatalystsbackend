@@ -80,7 +80,10 @@ function SignUpSignIn({ currentRoute }) {
               ...data.user,
             })
           );
-          setUser(data.user);
+          setUser({
+            access_token: data.access_token,
+            ...data.user,
+          });
           return;
         } else {
           alert(data.msg);
