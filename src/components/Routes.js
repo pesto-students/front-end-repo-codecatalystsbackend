@@ -47,7 +47,7 @@ const Routes = [
     element: <WrapperComponent Component={InterviewStart} />,
   },
   {
-    path: "/questions/:id",
+    path: "/questions",
     element: <WrapperComponent Component={InterviewQuestions} />,
   },
   {

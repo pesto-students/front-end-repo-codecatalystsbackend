@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import styles from "./interviewscreen.module.scss";
+import { Link } from "react-router-dom";
 
 function InterviewScreen() {
   const title = "ReactJS";
@@ -25,10 +26,10 @@ function InterviewScreen() {
       </div>
       <div className={styles.buttonsContainer}>
         <div>
-          <button>View all Questions List</button>
+          <Link to="/questions">View all Questions List</Link>
         </div>
         <div>
-          <button>Submit</button>
+          <Link to="/">Submit</Link>
         </div>
       </div>
     </div>

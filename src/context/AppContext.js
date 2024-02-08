@@ -16,6 +16,7 @@ const isAbsoluteURLRegex = /^(?:\w+:)\/\//;
 function AppProvider({ children }) {
   const [user, setUser] = useState();
   const [loading, setIsLoading] = useState(false);
+  const [interviewQuestions, setInterviewQuestions] = useState({});
 
   useEffect(() => {
     let currentUser = localStorage.getItem("TBuser");
@@ -65,8 +66,22 @@ function AppProvider({ children }) {
     }
   );
 
+  const getAllInterviewQuestions = () => {
+    if (
+      interviewQuestions?.interview_id &&
+      interviewQuestions.userQuestions?.length > 0
+    ) {
+      return interviewQuestions.userQuestions.reduce((acc, questionObj) => {
+        acc.push(questionObj.question);
+        return acc;
+      }, []);
+    }
+  };
+
   return (
-    <AppContext.Provider value={{ user, setUser }}>
+    <AppContext.Provider
+      value={{ user, setUser, setInterviewQuestions, getAllInterviewQuestions }}
+    >
       {loading && <Loader />}
       {children}
       <NotificationContainer />

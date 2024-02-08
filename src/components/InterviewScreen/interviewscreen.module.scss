@@ -39,7 +39,8 @@
     display: flex;
     gap: 40px;
 
-    button {
+    button,
+    a {
       padding: 10px 20px;
       border: none;
       border-radius: 10px;
@@ -47,6 +48,8 @@
       font-size: 18px;
       font-weight: 600;
       background-color: var(--yellow);
+      text-decoration: none;
+      color: #000;
     }
 
     div {

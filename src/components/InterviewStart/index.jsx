@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { AppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./interviewstart.module.scss";
 import { createInterview } from "../../apis/interviewApis";
 
 function InterviewStart() {
   const { user } = useAuth();
+  const { setInterviewQuestions } = useContext(AppContext);
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const selectedSkill = queryParams.get("skill");
   const userSkills = user.skills || [];
@@ -24,6 +28,10 @@ function InterviewStart() {
       return alert("Please select a category");
     }
     const res = await createInterview(user.id, value);
+    if (res) {
+      setInterviewQuestions({ ...res });
+      navigate(`/interview/${res.interview_id}`);
+    }
   };
 
   return (

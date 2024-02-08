@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import styles from "./interviewquestions.module.scss";
+import { AppContext } from "../../context/AppContext";
+import { Navigate } from "react-router-dom";
 
 function InterviewQuestions() {
+  const { getAllInterviewQuestions } = useContext(AppContext);
   const title = "ReactJS";
-  const questions = [
-    "What is a component in React?",
-    "How do you create a state in a React class component?",
-    "What is the purpose of props in React?",
-    "What is the role of virtual DOM in React?",
-  ];
+  const questions = getAllInterviewQuestions() || [];
+  console.log(questions, "qustins");
+
+  if (questions.length <= 0) {
+    return <Navigate tp="/" replace={true} />;
+  }
   return (
     <div className={styles.interviewQuestionsContainer}>
       <div className={styles.header}>
