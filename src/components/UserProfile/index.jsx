@@ -11,7 +11,12 @@ function UserProfile() {
     name: `${user.firstname} ${user.lastname}`,
     email: user.email,
     skills: user.skills?.join(", ") || "",
+    image_string: user.image_string || null,
   });
+
+  const [image, setImage] = useState(null);
+  const [base64, setBase64] = useState('');
+
   const handleOnChange = (e) => {
     const {
       target: { name = "", value = "" },
@@ -23,18 +28,41 @@ function UserProfile() {
       };
     });
   };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result);
+      setBase64(reader.result.split(',')[1]);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+    reader.onloadend = () => {
+      setImage(reader.result);
+      setBase64(reader.result.split(',')[1]);
+      setUserInfo((pv) => ({
+        ...pv,
+        image_string: reader.result.split(',')[1],
+      }));
+    };
+    
+  };
+
   const handleSubmit = async () => {
-    let { name, email, skills } = userInfo;
+    let { name, email, skills, image_string } = userInfo;
     if (!name || !email) {
       return alert("please enter valid details");
     }
-    skills = skills.replace(/ /g, "").split(",");
+    const skillsArray = skills.replace(/ /g, "").split(",");
     let fullname = name.split(" ");
     const payload = {
       firstname: fullname[0],
       lastname: fullname[1],
       email,
-      skills,
+      skills: skillsArray,
+      image_string
     };
     const res = await updateUser(user.id, payload);
     if (res) {
@@ -86,7 +114,14 @@ function UserProfile() {
       </div>
       <div className={styles.userImageContainer}>
         <p>Profile Image</p>
-        <div className={styles.imageContainer}></div>
+        <div className={styles.imageContainer}>
+        {userInfo.image_string != null && <img src={`data:image;base64,${userInfo.image_string}`} alt="user_image" />}
+        </div>
+        <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
       </div>
     </div>
   );
