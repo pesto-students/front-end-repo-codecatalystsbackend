@@ -15,6 +15,7 @@ import { Navigate } from "react-router-dom";
 export const WrapperComponent = ({
   Component,
   redirectPath = "/login",
+  isReview = false,
   ...props
 }) => {
   const { user } = useAuth();
@@ -24,7 +25,7 @@ export const WrapperComponent = ({
   }
   return (
     <Wrapper>
-      <Component {...props} />
+      <Component isReview={isReview} {...props} />
     </Wrapper>
   );
 };
@@ -55,12 +56,16 @@ const Routes = [
     element: <WrapperComponent Component={InterviewHistory} />,
   },
   {
-    path: "/result",
+    path: "/result/:id",
     element: <WrapperComponent Component={InterviewResult} />,
   },
   {
     path: "/interview/:id",
     element: <WrapperComponent Component={InterviewScreen} />,
+  },
+  {
+    path: "/review/:id",
+    element: <WrapperComponent Component={InterviewScreen} isReview={true} />,
   },
   {
     path: "/user",

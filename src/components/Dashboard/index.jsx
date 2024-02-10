@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import styles from "./dashboard.module.scss";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { getAllInterviews } from "../../apis/interviewApis";
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [interviews, setInterviews] = useState([]);
+  useEffect(() => {
+    const fetchAllInterviews = async () => {
+      if (!user?.id) {
+        return navigate("/");
+      }
+      const res = await getAllInterviews({
+        id: user.id,
+        pageNumber: 1,
+        pageSize: 6,
+      });
+      if (res?.interview?.length > 0) {
+        setInterviews(res.interview);
+      }
+    };
+    fetchAllInterviews();
+  }, []);
   const recInterviewList = [
     {
       name: "SQL",
@@ -45,7 +67,7 @@ function Dashboard() {
         {previousInterviewList?.length > 0 && (
           <div className={styles.previousResultsContainer}>
             <p>Previous Results</p>
-            <PreviousInterviewsLists list={previousInterviewList} />
+            <PreviousInterviewsLists list={interviews} />
           </div>
         )}
       </div>
@@ -63,10 +85,13 @@ const PreviousInterviewsLists = ({ list }) => {
     return <></>;
   }
   return (
-    <div className={styles.previousResults}>
-      {list.map((preInt, index) => (
-        <PreviousInterviewCards data={preInt} key={index} />
-      ))}
+    <div className={styles.previousResultsBox}>
+      <div className={styles.previousResults}>
+        {list.map((preInt, index) => (
+          <PreviousInterviewCards data={preInt} key={index} />
+        ))}
+      </div>
+      <Link to="/history">View All</Link>
     </div>
   );
 };
@@ -86,8 +111,8 @@ const RecommendedInterviewLists = ({ list }) => {
 
 const PreviousInterviewCards = ({ data }) => {
   let color = "#4bb543";
-  const { currentScore = 0, totalMarks = 0, name } = data || {};
-  const percentage = (currentScore / totalMarks) * 100;
+  const { correct_answer_count = 0, questions, category } = data || {};
+  const percentage = (correct_answer_count / questions.length) * 100;
   if (percentage < 80 && percentage >= 50) {
     color = "#2D99FF";
   } else if (percentage < 50) {
@@ -103,9 +128,9 @@ const PreviousInterviewCards = ({ data }) => {
       ></div>
       <div className={styles.dataContainer}>
         <p>
-          {currentScore}/{totalMarks}
+          {correct_answer_count}/{questions.length}
         </p>
-        <p>{name}</p>
+        <p>{category}</p>
       </div>
     </div>
   );

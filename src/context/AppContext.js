@@ -21,8 +21,10 @@ function AppProvider({ children }) {
   );
   const [loading, setIsLoading] = useState(false);
   const [interviewQuestions, setInterviewQuestions] = useState({});
-  const interviewDurationInSecs = useRef(30);
+  const [reviewQuestions, setReviewQuestions] = useState({});
+  const interviewDurationInSecs = useRef(600);
   const [selectedAnswer, setSelectedAnswer] = useState({});
+  const resultRef = useRef({});
   const [counter, setCounter] = useState({ minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -79,7 +81,7 @@ function AppProvider({ children }) {
     }
   }, [counter]);
 
-  const handleInterviewSubmit = async (p) => {
+  const handleInterviewSubmit = async ({ cb = () => {} } = {}) => {
     const answersPayload = [];
     const obj = Object.entries(selectedAnswer);
     if (obj?.length > 0) {
@@ -91,10 +93,20 @@ function AppProvider({ children }) {
         answersPayload.push(currentAnswer);
       });
       const res = await submitInterview(interviewQuestions._id, answersPayload);
-      console.log(res, "res1111");
+      if (res) {
+        resultRef.current = {
+          ...resultRef.current,
+          [res._id]: {
+            category: res.category || "",
+            correctAnswer: res.correct_answer_count || 0,
+            totalQuestions: res.questions.length,
+          },
+        };
+        cb(res._id);
+      }
+      setSelectedAnswer({});
       setInterviewQuestions({});
       setCounter({ minutes: 0, seconds: 0 });
-      setSelectedAnswer({});
     }
   };
 
@@ -150,6 +162,11 @@ function AppProvider({ children }) {
     return question;
   };
 
+  const getResultsById = (id) => {
+    if (!id) return;
+    return resultRef.current[id] || {};
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -163,6 +180,9 @@ function AppProvider({ children }) {
         setSelectedAnswer,
         handleInterviewSubmit,
         counter,
+        getResultsById,
+        reviewQuestions,
+        setReviewQuestions,
       }}
     >
       {loading && <Loader />}
