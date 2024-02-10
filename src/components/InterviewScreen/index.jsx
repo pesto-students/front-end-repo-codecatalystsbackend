@@ -173,12 +173,6 @@ const OptionsList = ({
                 {eList.map((eOption, iIndex) => (
                   <div
                     key={`${index}-${iIndex}`}
-                    // style={{
-                    //   backgroundColor:
-                    //     selectedAnswer[questionId]?.option === eOption
-                    //       ? "#4bb543"
-                    //       : "rgba(255, 255, 255, 0.3)",
-                    // }}
                     style={getOptionStyle(eOption)}
                     onClick={() => handleSelect(eOption)}
                   >
