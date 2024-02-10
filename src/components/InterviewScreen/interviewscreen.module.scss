@@ -41,23 +41,20 @@
 
     button,
     a {
-      padding: 10px 20px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       font-size: 18px;
       font-weight: 600;
-      background-color: var(--yellow);
       text-decoration: none;
       color: #000;
+      background-color: var(--yellow);
     }
 
     div {
-      &:first-child {
-        button {
-          background-color: #f6f6f6;
-        }
-      }
+      background-color: var(--yellow);
+      padding: 10px 20px;
+      border-radius: 10px;
     }
   }
 }
@@ -106,16 +103,4 @@
     color: #fff;
     background-color: rgba(0, 0, 0, 0.6);
   }
-}
-
-.counter {
-  height: 60px;
-  width: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 100%;
-  color: var(--yellow);
-  font-weight: 600;
 }

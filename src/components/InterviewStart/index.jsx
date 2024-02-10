@@ -24,13 +24,14 @@ function InterviewStart() {
   const handleStart = async () => {
     const e = document.getElementById("interviewCategoryOptions");
     const value = e.options[e.selectedIndex].value;
-    if (!value) {
-      return alert("Please select a category");
-    }
+    // if (!value) {
+    //   return alert("Please select a category");
+    // }
     const res = await createInterview(user.id, value);
     if (res) {
-      setInterviewQuestions({ ...res });
-      navigate(`/interview/${res.interview_id}`);
+      const { category = "", duration = 0, questions = [], _id = "" } = res;
+      setInterviewQuestions({ category, duration, questions, _id });
+      navigate(`/interview/${questions[0]._id}`);
     }
   };
 

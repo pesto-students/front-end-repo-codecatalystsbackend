@@ -73,10 +73,14 @@
     cursor: pointer;
   }
 
-  a {
+  button {
     color: rgb(216, 216, 216);
     font-size: 16px;
     font-weight: 600;
     text-decoration: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
 }

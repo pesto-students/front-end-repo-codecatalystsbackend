@@ -1,27 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import styles from "./interviewscreen.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
+import Counter from "../Counter/Counter";
 
 function InterviewScreen() {
-  const title = "ReactJS";
-  const question = "What is ReactJS?";
-  const options = [
-    "JavaScript XML",
-    "JSX is not an asyncronous",
-    "JSON Exchange",
-    "JavaScript Extensions",
-  ];
+  const navigate = useNavigate();
+  const params = useParams();
+  const {
+    interviewQuestions: { category = "", _id = "", questions = [] },
+    getInterviewQuestionById,
+  } = useContext(AppContext);
+
+  const currentQuestion = getInterviewQuestionById(params.id || "");
+  if (!_id || questions?.length <= 0 || !currentQuestion) {
+    navigate("/");
+    return;
+  }
+
+  const title = category;
+  const question = currentQuestion.question;
+  const options = [];
+  const obj = Object.entries(currentQuestion.options);
+  obj.forEach(
+    (option) =>
+      option[0] !== "_id" &&
+      options.push(`${option[0].toUpperCase()}: ${option[1]}`)
+  );
+  const questionIndex = questions.findIndex(
+    (question) => question._id === params.id
+  );
   return (
     <div className={styles.interviewScreenContainer}>
       <div style={{ width: "100%" }}>
         <h2>{title}</h2>
         <div className={styles.questionsContainer}>
           <div className={styles.questionsBox}>
-            <p className={styles.question}>{question}</p>
-            <OptionsList list={options} />
+            <p className={styles.question}>
+              {questionIndex + 1}: {question}
+            </p>
+            <OptionsList list={options} questionId={params.id} />
           </div>
-          <QuestionController />
+          <QuestionController
+            currQuesIndex={questionIndex}
+            questions={questions}
+          />
         </div>
       </div>
       <div className={styles.buttonsContainer}>
@@ -29,15 +53,16 @@ function InterviewScreen() {
           <Link to="/questions">View all Questions List</Link>
         </div>
         <div>
-          <Link to="/">Submit</Link>
+          <button onClick={() => console.log("clclcllc")}>Submit</button>
         </div>
       </div>
     </div>
   );
 }
 
-const OptionsList = ({ list }) => {
-  const [currentSelected, setCurrentSelected] = useState("");
+const OptionsList = ({ list, questionId }) => {
+  const { selectedAnswer, setSelectedAnswer } = useContext(AppContext);
+
   if (!Array.isArray(list) || list.length <= 0) {
     return <></>;
   }
@@ -54,6 +79,18 @@ const OptionsList = ({ list }) => {
       [[], []]
     )
     .reverse();
+
+  const handleSelect = (eOption) => {
+    setSelectedAnswer((pv) => {
+      return {
+        ...pv,
+        [questionId]: {
+          answer: eOption.split(":")[0].toLowerCase(),
+          option: eOption,
+        },
+      };
+    });
+  };
   return (
     <div className={styles.optionsListContainer}>
       {renderList.length > 0 &&
@@ -66,11 +103,11 @@ const OptionsList = ({ list }) => {
                     key={`${index}-${iIndex}`}
                     style={{
                       backgroundColor:
-                        currentSelected === eOption
+                        selectedAnswer[questionId]?.option === eOption
                           ? "#4bb543"
                           : "rgba(255, 255, 255, 0.3)",
                     }}
-                    onClick={() => setCurrentSelected(eOption)}
+                    onClick={() => handleSelect(eOption)}
                   >
                     <p>{eOption}</p>
                   </div>
@@ -83,30 +120,35 @@ const OptionsList = ({ list }) => {
   );
 };
 
-const QuestionController = () => {
+const QuestionController = ({ currQuesIndex = 0, questions = [] }) => {
+  const navigate = useNavigate();
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
       <div className={styles.questionControllerContainer}>
-        <button>Previous</button>
-        <Counter numOfSeconds={6} onTimeup={() => alert("time up")} />
-        <button>Next</button>
+        <button
+          disabled={currQuesIndex <= 0}
+          style={currQuesIndex <= 0 ? { opacity: 0.2 } : {}}
+          onClick={() => {
+            const prevQuestionIndex = currQuesIndex - 1;
+            navigate(`/interview/${questions[prevQuestionIndex]._id}`);
+          }}
+        >
+          Previous
+        </button>
+        <Counter />
+        <button
+          disabled={currQuesIndex >= questions?.length - 1}
+          style={currQuesIndex >= questions?.length - 1 ? { opacity: 0.2 } : {}}
+          onClick={() => {
+            const nextQuestionIndex = currQuesIndex + 1;
+            navigate(`/interview/${questions[nextQuestionIndex]._id}`);
+          }}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
-};
-
-const Counter = ({ numOfSeconds, onTimeup = () => {} }) => {
-  const [currentTime, setCurrentTime] = useState(numOfSeconds);
-  useEffect(() => {
-    if (currentTime > 0) {
-      setTimeout(() => {
-        setCurrentTime((pv) => pv - 1);
-      }, 1000);
-    } else {
-      onTimeup();
-    }
-  }, [currentTime]);
-  return <div className={styles.counter}>{currentTime}</div>;
 };
 
 export default InterviewScreen;

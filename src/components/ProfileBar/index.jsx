@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 
 import styles from "./profilebar.module.scss";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
 
 function ProfileBar() {
-  const { user, setUser } = useContext(AppContext);
+  const { setUser } = useContext(AppContext);
 
   const handleLogout = () => {
     setUser(undefined);
@@ -28,24 +29,35 @@ const ProfileCard = () => {
     <div className={styles.profileCardContainer}>
       <div className={styles.imageContainer}>{/* <img /> */}</div>
       <p>
-        {user.firstname} {user.lastname}
+        {user?.firstname} {user?.lastname}
       </p>
-      <span>{user.email}</span>
+      <span>{user?.email}</span>
     </div>
   );
 };
 
 const CurrentPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const totalPages = [
     { section: "Dashboard", url: "/" },
     { section: "Profile", url: "/user" },
   ];
+  const exactPath = location.pathname.split("/")[1];
+  let isNavigationAllowed =
+    exactPath !== "questions" && exactPath !== "interview";
   return (
     <div className={styles.pagesContainer}>
       {totalPages.map((page, index) => (
         <div key={index}>
-          <Link
+          <button
+            onClick={() => {
+              if (isNavigationAllowed) {
+                navigate(page.url);
+              } else {
+                NotificationManager.info("Please Submit the current interview");
+              }
+            }}
             to={page.url}
             style={
               page.url === location.pathname
@@ -54,7 +66,7 @@ const CurrentPage = () => {
             }
           >
             {page.section}
-          </Link>
+          </button>
         </div>
       ))}
     </div>
