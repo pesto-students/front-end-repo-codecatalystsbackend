@@ -7,15 +7,26 @@ import { NotificationManager } from "react-notifications";
 
 function ProfileBar() {
   const { setUser } = useContext(AppContext);
+  const location = useLocation();
+  const exactPath = location.pathname.split("/")[1];
+  let isNavigationAllowed =
+    exactPath !== "questions" && exactPath !== "interview";
 
   const handleLogout = () => {
-    setUser(undefined);
-    localStorage.removeItem("TBuser");
+    if (isNavigationAllowed) {
+      setUser(undefined);
+      localStorage.removeItem("TBuser");
+    } else {
+      NotificationManager.info("Please Submit the current interview");
+    }
   };
   return (
     <div className={styles.sideProfileContainer}>
       <ProfileCard />
-      <CurrentPage />
+      <CurrentPage
+        location={location}
+        isNavigationAllowed={isNavigationAllowed}
+      />
       <div className={styles.logoutButton}>
         <button onClick={handleLogout}>Logout</button>
       </div>
@@ -36,16 +47,13 @@ const ProfileCard = () => {
   );
 };
 
-const CurrentPage = () => {
+const CurrentPage = ({ location, isNavigationAllowed }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const totalPages = [
     { section: "Dashboard", url: "/" },
     { section: "Profile", url: "/user" },
   ];
-  const exactPath = location.pathname.split("/")[1];
-  let isNavigationAllowed =
-    exactPath !== "questions" && exactPath !== "interview";
+
   return (
     <div className={styles.pagesContainer}>
       {totalPages.map((page, index) => (

@@ -11,6 +11,7 @@ function InterviewScreen() {
   const {
     interviewQuestions: { category = "", _id = "", questions = [] },
     getInterviewQuestionById,
+    handleInterviewSubmit,
   } = useContext(AppContext);
 
   const currentQuestion = getInterviewQuestionById(params.id || "");
@@ -53,7 +54,7 @@ function InterviewScreen() {
           <Link to="/questions">View all Questions List</Link>
         </div>
         <div>
-          <button onClick={() => console.log("clclcllc")}>Submit</button>
+          <button onClick={handleInterviewSubmit}>Submit</button>
         </div>
       </div>
     </div>

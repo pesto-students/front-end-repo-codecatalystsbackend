@@ -7,6 +7,7 @@ import {
 } from "react-notifications";
 
 import "react-notifications/lib/notifications.css";
+import { submitInterview } from "../apis/interviewApis";
 
 export const AppContext = createContext("");
 
@@ -19,129 +20,8 @@ function AppProvider({ children }) {
     localUser ? JSON.parse(localUser) : undefined
   );
   const [loading, setIsLoading] = useState(false);
-  const [interviewQuestions, setInterviewQuestions] = useState({
-    _id: "65c6a139568feb424d5a62e9",
-    category: "NodeJS",
-    questions: [
-      {
-        question: "What is the package manager for Node.js?",
-        options: {
-          a: "npm",
-          b: "yarn",
-          c: "bower",
-          d: "gulp",
-          _id: "65c6a139568feb424d5a62eb",
-        },
-        _id: "65c6a139568feb424d5a62ea",
-      },
-      {
-        question:
-          "Which of the following is a popular framework for building Node.js applications?",
-        options: {
-          a: "Express",
-          b: "Django",
-          c: "Flask",
-          d: "Spring",
-          _id: "65c6a139568feb424d5a62ed",
-        },
-        _id: "65c6a139568feb424d5a62ec",
-      },
-      {
-        question: "What is the purpose of require() function in Node.js?",
-        options: {
-          a: "To define a new variable",
-          b: "To include external modules",
-          c: "To declare a function",
-          d: "To create a new object",
-          _id: "65c6a139568feb424d5a62ef",
-        },
-        _id: "65c6a139568feb424d5a62ee",
-      },
-      {
-        question: "Which of the following is an HTTP framework for Node.js?",
-        options: {
-          a: "BodyParser",
-          b: "Passport",
-          c: "Axios",
-          d: "Restify",
-          _id: "65c6a139568feb424d5a62f1",
-        },
-        _id: "65c6a139568feb424d5a62f0",
-      },
-      {
-        question:
-          "In Node.js, which method is used to append new data to a file?",
-        options: {
-          a: "appendToFile()",
-          b: "writeFile()",
-          c: "appendFile()",
-          d: "createFile()",
-          _id: "65c6a139568feb424d5a62f3",
-        },
-        _id: "65c6a139568feb424d5a62f2",
-      },
-      {
-        question:
-          "What is the event-driven model used in Node.js for handling I/O operations?",
-        options: {
-          a: "Sync",
-          b: "Async",
-          c: "EventEmitter",
-          d: "Promise",
-          _id: "65c6a139568feb424d5a62f5",
-        },
-        _id: "65c6a139568feb424d5a62f4",
-      },
-      {
-        question:
-          "Which module in Node.js is used for stream-based data processing?",
-        options: {
-          a: "fs",
-          b: "http",
-          c: "crypto",
-          d: "path",
-          _id: "65c6a139568feb424d5a62f7",
-        },
-        _id: "65c6a139568feb424d5a62f6",
-      },
-      {
-        question: "What does the term 'callback' refer to in Node.js?",
-        options: {
-          a: "A function passed as an argument to another function",
-          b: "A method used to handle errors",
-          c: "A software module that handles authentication",
-          d: "A built-in Node.js class for handling database queries",
-          _id: "65c6a139568feb424d5a62f9",
-        },
-        _id: "65c6a139568feb424d5a62f8",
-      },
-      {
-        question:
-          "Which command is used to start a Node.js application in debug mode?",
-        options: {
-          a: "node start --debug",
-          b: "node --inspect",
-          c: "node --debug",
-          d: "node debug start",
-          _id: "65c6a139568feb424d5a62fb",
-        },
-        _id: "65c6a139568feb424d5a62fa",
-      },
-      {
-        question: "What is the default port number for Node.js applications?",
-        options: {
-          a: "3000",
-          b: "8080",
-          c: "5000",
-          d: "3030",
-          _id: "65c6a139568feb424d5a62fd",
-        },
-        _id: "65c6a139568feb424d5a62fc",
-      },
-    ],
-    duration: 0,
-  });
-  const interviewDurationInSecs = useRef(600);
+  const [interviewQuestions, setInterviewQuestions] = useState({});
+  const interviewDurationInSecs = useRef(30);
   const [selectedAnswer, setSelectedAnswer] = useState({});
   const [counter, setCounter] = useState({ minutes: 0, seconds: 0 });
 
@@ -194,10 +74,29 @@ function AppProvider({ children }) {
           });
         }, 1000);
       } else {
-        alert("time up");
+        handleInterviewSubmit();
       }
     }
   }, [counter]);
+
+  const handleInterviewSubmit = async (p) => {
+    const answersPayload = [];
+    const obj = Object.entries(selectedAnswer);
+    if (obj?.length > 0) {
+      obj.forEach((answer) => {
+        const currentAnswer = {
+          question_id: answer[0],
+          answer: answer[1].answer,
+        };
+        answersPayload.push(currentAnswer);
+      });
+      const res = await submitInterview(interviewQuestions._id, answersPayload);
+      console.log(res, "res1111");
+      setInterviewQuestions({});
+      setCounter({ minutes: 0, seconds: 0 });
+      setSelectedAnswer({});
+    }
+  };
 
   axios.interceptors.request.use(
     (config) => {
@@ -262,6 +161,7 @@ function AppProvider({ children }) {
         getInterviewQuestionById,
         selectedAnswer,
         setSelectedAnswer,
+        handleInterviewSubmit,
         counter,
       }}
     >
