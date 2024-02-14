@@ -38,7 +38,7 @@ const ProfileCard = () => {
   const { user } = useContext(AppContext);
   return (
     <div className={styles.profileCardContainer}>
-      <div className={styles.imageContainer}>{/* <img /> */}</div>
+      <div className={styles.imageContainer}>{user.image_string != null && <img src={`data:image;base64,${user.image_string}`} alt="user_image" />}</div>
       <p>
         {user?.firstname} {user?.lastname}
       </p>
