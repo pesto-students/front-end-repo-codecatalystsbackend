@@ -4,6 +4,12 @@ import styles from "./userprofile.module.scss";
 import { Link } from "react-router-dom";
 import { updateUser } from "../../apis/userApis";
 import { AppContext } from "../../context/AppContext";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
+import "react-notifications/lib/notifications.css";
 
 function UserProfile() {
   const { user, setUser } = useContext(AppContext);
@@ -73,6 +79,7 @@ function UserProfile() {
       };
       localStorage.setItem("TBuser", JSON.stringify(updatedData));
       setUser({ ...payload, id: user.id, access_token: user.access_token });
+      NotificationManager.success("User info updated successfully");
     }
   };
   return (

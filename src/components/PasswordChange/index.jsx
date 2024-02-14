@@ -3,6 +3,12 @@ import { resetPassword } from "../../apis/userApis";
 import useAuth from "../../hooks/useAuth";
 
 import styles from "./passwordchange.module.scss";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
+import "react-notifications/lib/notifications.css";
 
 function PasswordChange() {
   const { user } = useAuth();
@@ -36,6 +42,9 @@ function PasswordChange() {
       newPassword,
       confirmPassword,
     });
+    if (res) {
+      NotificationManager.success("Password updated successfully");
+    }
     console.log(res, "res");
   };
   return (
@@ -45,6 +54,7 @@ function PasswordChange() {
         value={userInfo.currentPassword}
         name="currentPassword"
         onChange={handleOnChange}
+        type="password"
         placeHolder={"Enter Your Current Password"}
       />
 
