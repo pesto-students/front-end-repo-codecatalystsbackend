@@ -23,6 +23,20 @@ function AppProvider({ children }) {
   const [interviewQuestions, setInterviewQuestions] = useState({});
   const [reviewQuestions, setReviewQuestions] = useState({});
   const interviewDurationInSecs = useRef(600);
+  const defaultInterviewSkills = [
+    {
+      name: "SQL",
+      description: "Crack SQL interview",
+      src: "https://images.unsplash.com/photo-1662026911591-335639b11db6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      tag: "SQL image",
+    },
+    {
+      name: "Python",
+      description: "Crack Python interview",
+      src: "https://images.unsplash.com/photo-1649180556628-9ba704115795?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      tag: "Python image",
+    },
+  ];
   const [selectedAnswer, setSelectedAnswer] = useState({});
   const resultRef = useRef({});
   const [counter, setCounter] = useState({ minutes: 0, seconds: 0 });
@@ -139,7 +153,7 @@ function AppProvider({ children }) {
       setIsLoading(false);
       if (error?.response?.status === 400) {
         const { data } = error.response;
-        if (data === "Invalid Token") {
+        if (data?.error === "Invalid Token") {
           localStorage.removeItem("TBuser");
           setUser(undefined);
           NotificationManager.info("Please log in again", "User Logged Out");
@@ -183,6 +197,7 @@ function AppProvider({ children }) {
         getResultsById,
         reviewQuestions,
         setReviewQuestions,
+        defaultInterviewSkills,
       }}
     >
       {loading && <Loader />}

@@ -6,6 +6,23 @@
   justify-content: space-between;
   align-items: center;
 
+  .noInterviewContainer {
+    width: 100%;
+    height: 250px;
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+
+    p {
+      font-size: 22px;
+      font-weight: 500;
+    }
+  }
+
   .currentInterviewsContainer {
     flex: 0.5;
     height: 100%;
@@ -145,7 +162,16 @@
     height: 80px;
     width: 80px;
     border-radius: 10px;
-    background-color: grey;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 10px;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      transform: scale(1.5);
+    }
   }
 
   .dataContainer {

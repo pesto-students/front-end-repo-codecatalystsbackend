@@ -3,10 +3,7 @@ import { resetPassword } from "../../apis/userApis";
 import useAuth from "../../hooks/useAuth";
 
 import styles from "./passwordchange.module.scss";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 
 import "react-notifications/lib/notifications.css";
 
@@ -32,11 +29,15 @@ function PasswordChange() {
   const handleSubmit = async () => {
     const { currentPassword, newPassword, confirmPassword } = userInfo;
     if (!currentPassword || !newPassword || !confirmPassword) {
-      return alert("Please fill all the details");
+      return NotificationManager.info("Please fill all the details");
     }
     if (newPassword !== confirmPassword) {
-      return alert("Passwords do not match");
+      return NotificationManager.error("Passwords do not match");
     }
+    if (newPassword.length <= 8)
+      return NotificationManager.info(
+        "Password should have 8 letters or above"
+      );
     const res = await resetPassword(user.id, {
       currentPassword,
       newPassword,

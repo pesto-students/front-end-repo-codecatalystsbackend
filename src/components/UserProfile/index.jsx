@@ -4,10 +4,7 @@ import styles from "./userprofile.module.scss";
 import { Link } from "react-router-dom";
 import { updateUser } from "../../apis/userApis";
 import { AppContext } from "../../context/AppContext";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 
 import "react-notifications/lib/notifications.css";
 
@@ -19,9 +16,7 @@ function UserProfile() {
     skills: user.skills?.join(", ") || "",
     image_string: user.image_string || null,
   });
-
-  const [image, setImage] = useState(null);
-  const [base64, setBase64] = useState('');
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
   const handleOnChange = (e) => {
     const {
@@ -38,29 +33,25 @@ function UserProfile() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-      setBase64(reader.result.split(',')[1]);
-    };
     if (file) {
       reader.readAsDataURL(file);
     }
     reader.onloadend = () => {
-      setImage(reader.result);
-      setBase64(reader.result.split(',')[1]);
       setUserInfo((pv) => ({
         ...pv,
-        image_string: reader.result.split(',')[1],
+        image_string: reader.result.split(",")[1],
       }));
     };
-    
   };
 
   const handleSubmit = async () => {
     let { name, email, skills, image_string } = userInfo;
     if (!name || !email) {
-      return alert("please enter valid details");
+      return NotificationManager.info("please enter valid details");
     }
+    const isValidEmail = emailRegex.test(email);
+    if (!isValidEmail)
+      return NotificationManager.info("Please enter a valid email address");
     const skillsArray = skills.replace(/ /g, "").split(",");
     let fullname = name.split(" ");
     const payload = {
@@ -68,7 +59,7 @@ function UserProfile() {
       lastname: fullname[1],
       email,
       skills: skillsArray,
-      image_string
+      image_string,
     };
     const res = await updateUser(user.id, payload);
     if (res) {
@@ -122,13 +113,23 @@ function UserProfile() {
       <div className={styles.userImageContainer}>
         <p>Profile Image</p>
         <div className={styles.imageContainer}>
-        {userInfo.image_string != null && <img src={`data:image;base64,${userInfo.image_string}`} alt="user_image" />}
+          {userInfo.image_string != null && (
+            <img
+              src={`data:image;base64,${userInfo.image_string}`}
+              alt="user_image"
+            />
+          )}
         </div>
+        <label for="ImageID" className={styles.uplaodImageBtn}>
+          Add New image
+        </label>
         <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+          type="file"
+          accept="image/*"
+          id="ImageID"
+          onChange={handleImageChange}
+          style={{ display: "none" }}
+        />
       </div>
     </div>
   );

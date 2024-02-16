@@ -3,18 +3,23 @@ import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
 
 import styles from "./interviewstart.module.scss";
 import { createInterview } from "../../apis/interviewApis";
 
 function InterviewStart() {
   const { user } = useAuth();
-  const { setInterviewQuestions } = useContext(AppContext);
+  const { setInterviewQuestions, defaultInterviewSkills } =
+    useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const selectedSkill = queryParams.get("skill");
-  const userSkills = user.skills || [];
+  const userSkills =
+    user.skills.filter((skill) => skill.length > 0)?.length > 0
+      ? [...user.skills, ...defaultInterviewSkills.map((skill) => skill.name)]
+      : [...defaultInterviewSkills.map((skill) => skill.name)];
   const instructions = [
     "Each questions have 4 Options",
     "You can skip any questions for answer latter",
@@ -24,9 +29,9 @@ function InterviewStart() {
   const handleStart = async () => {
     const e = document.getElementById("interviewCategoryOptions");
     const value = e.options[e.selectedIndex].value;
-    // if (!value) {
-    //   return alert("Please select a category");
-    // }
+    if (!value) {
+      return NotificationManager.info("Please select a category");
+    }
     const res = await createInterview(user.id, value);
     if (res) {
       const { category = "", duration = 0, questions = [], _id = "" } = res;

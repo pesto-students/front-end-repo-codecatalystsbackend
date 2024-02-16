@@ -19,10 +19,23 @@
 
   .userImageContainer {
     width: 200px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
+
+    .uplaodImageBtn {
+      width: 100%;
+      padding: 12px;
+      background-color: #fff;
+      color: #000;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+    }
 
     p {
       color: #fff;
@@ -31,15 +44,18 @@
     }
 
     .imageContainer {
-      width: 80%;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       border-radius: 12px;
       border: none;
       background-color: grey;
+      object-fit: contain;
+      background-color: #fff;
       img {
         height: 100%;
         width: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
     }
   }

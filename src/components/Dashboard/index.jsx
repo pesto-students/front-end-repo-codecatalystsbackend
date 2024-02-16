@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import styles from "./dashboard.module.scss";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { getAllInterviews } from "../../apis/interviewApis";
+import { AppContext } from "../../context/AppContext";
 
 function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [interviews, setInterviews] = useState([]);
+  const { defaultInterviewSkills } = useContext(AppContext);
+  const [interviews, setInterviews] = useState(undefined);
   useEffect(() => {
     const fetchAllInterviews = async () => {
       if (!user?.id) {
@@ -26,48 +28,27 @@ function Dashboard() {
     };
     fetchAllInterviews();
   }, []);
-  const recInterviewList = [
-    {
-      name: "SQL",
-      description: "Crack SQL interview",
-    },
-    {
-      name: "Python",
-      description: "Crack Python interview",
-    },
-  ];
-  const previousInterviewList = [
-    {
-      name: "ReactJS",
-      currentScore: 3,
-      totalMarks: 10,
-    },
-    {
-      name: "NodeJS",
-      currentScore: 5,
-      totalMarks: 10,
-    },
-    {
-      name: "AngularJS",
-      currentScore: 4,
-      totalMarks: 10,
-    },
-    {
-      name: "VueJS",
-      currentScore: 8,
-      totalMarks: 10,
-    },
-  ];
+  const recInterviewList = [...defaultInterviewSkills];
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.currentInterviewsContainer}>
-        <div className={styles.buttonContainer}>
-          <Link to="/start">Start Interview</Link>
-        </div>
-        {previousInterviewList?.length > 0 && (
+        {interviews?.length > 0 && (
+          <div className={styles.buttonContainer}>
+            <Link to="/start">Start Interview</Link>
+          </div>
+        )}
+        {interviews?.length > 0 && (
           <div className={styles.previousResultsContainer}>
             <p>Previous Results</p>
             <PreviousInterviewsLists list={interviews} />
+          </div>
+        )}
+        {interviews?.length <= 0 && (
+          <div className={styles.noInterviewContainer}>
+            <p>Let's start with your first Interview practise</p>
+            <div className={styles.buttonContainer}>
+              <Link to="/start">Start Interview</Link>
+            </div>
           </div>
         )}
       </div>
@@ -137,10 +118,16 @@ const PreviousInterviewCards = ({ data }) => {
 };
 
 const RecommendedInterviewCards = ({ data }) => {
+  const navigate = useNavigate();
   const { name, description } = data || {};
   return (
-    <div className={styles.recIntCardContainer}>
-      <div className={styles.imageContainer}></div>
+    <div
+      className={styles.recIntCardContainer}
+      onClick={() => navigate(`/start?skill=${name}`)}
+    >
+      <div className={styles.imageContainer}>
+        <img src={data.src} alt={data.tag} />
+      </div>
       <div className={styles.dataContainer}>
         <p>{name}</p>
         <p>{description}</p>
