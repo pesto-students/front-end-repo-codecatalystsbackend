@@ -1,4 +1,10 @@
-import { createContext, useState, useRef, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  useRef,
+  useEffect,
+  useInsertionEffect,
+} from "react";
 import Loader from "../components/Loader";
 import axios from "axios";
 import {
@@ -8,6 +14,7 @@ import {
 
 import "react-notifications/lib/notifications.css";
 import { submitInterview } from "../apis/interviewApis";
+import NoDesktop from "../components/NoDesktop";
 
 export const AppContext = createContext("");
 
@@ -16,6 +23,7 @@ const isAbsoluteURLRegex = /^(?:\w+:)\/\//;
 
 function AppProvider({ children }) {
   const localUser = localStorage.getItem("TBuser");
+  const [isDesktop, setIsDesktop] = useState(true);
   const [user, setUser] = useState(
     localUser ? JSON.parse(localUser) : undefined
   );
@@ -40,6 +48,23 @@ function AppProvider({ children }) {
   const [selectedAnswer, setSelectedAnswer] = useState({});
   const resultRef = useRef({});
   const [counter, setCounter] = useState({ minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth < 1100) {
+        if (isDesktop) {
+          setIsDesktop(false);
+        }
+      } else {
+        if (!isDesktop) {
+          setIsDesktop(true);
+        }
+      }
+    };
+    window.addEventListener("resize", updateSize);
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, [isDesktop]);
 
   useEffect(() => {
     if (interviewQuestions?._id) {
@@ -201,9 +226,15 @@ function AppProvider({ children }) {
         loading,
       }}
     >
-      {loading && <Loader />}
-      {children}
-      <NotificationContainer />
+      {isDesktop ? (
+        <>
+          {loading && <Loader />}
+          {children}
+          <NotificationContainer />
+        </>
+      ) : (
+        <NoDesktop />
+      )}
     </AppContext.Provider>
   );
 }
