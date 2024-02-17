@@ -11,8 +11,8 @@ function SignUpSignIn({ currentRoute }) {
   const { user, setUser } = useContext(AppContext);
   const text = currentRoute === "login" ? "Log in" : "Sign up";
   const [userInfo, setUserInfo] = useState({
-    email: "",
-    password: "",
+    email: currentRoute === "login" ? "demo@demo.com" : "",
+    password: currentRoute === "login" ? "123123123" : "",
     name: "",
   });
 
