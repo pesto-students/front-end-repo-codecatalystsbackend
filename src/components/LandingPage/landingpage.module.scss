@@ -1,0 +1,109 @@
+.landingPageContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  .landingPageHeader {
+    padding: 16px 30px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .imageContainer {
+    height: 100%;
+    aspect-ratio: 9/12;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .landingPageContent {
+    position: relative;
+    z-index: 2;
+    width: 40vw;
+    padding: 16px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    p {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: 32px;
+      line-height: 40px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    a {
+      padding: 12px;
+      width: 10vw;
+      font-weight: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      background-color: #fff;
+      border: none;
+      text-decoration: none;
+      color: #000;
+      text-align: center;
+    }
+  }
+
+  .bottomCardsContainer {
+    padding: 30px;
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    width: 60vw;
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+
+    .bottomCard {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .imageContainer {
+        position: relative;
+        height: 60px;
+        width: 60px;
+        overflow: hidden;
+        border-radius: 12px;
+      }
+
+      p {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        color: #909090;
+      }
+    }
+  }
+
+  .signupsigninFormContainer {
+    position: absolute;
+    z-index: 2;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

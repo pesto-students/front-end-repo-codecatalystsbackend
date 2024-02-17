@@ -1,0 +1,22 @@
+.noDesktopContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .noDesktop {
+    width: 80%;
+    aspect-ratio: 9/4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 12px;
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+}

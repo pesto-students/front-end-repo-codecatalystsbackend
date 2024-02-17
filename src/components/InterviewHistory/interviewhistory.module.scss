@@ -1,0 +1,76 @@
+.interviewHistoryContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .header {
+    position: absolute;
+    top: -30px;
+    left: 10px;
+
+    p {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 22px;
+    }
+  }
+
+  .historyContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    gap: 20px;
+    padding: 30px 15px;
+
+    h3 {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 18px;
+    }
+
+    .history {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      div {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 1px 2px 4px #444;
+
+        p,
+        button {
+          flex: 1;
+        }
+
+        p {
+          color: #fff;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 16px;
+        }
+
+        button {
+          border-radius: 10px;
+          background-color: rgba(0, 0, 0, 0.4);
+          border: none;
+          padding: 8px;
+          color: #fff;
+          cursor: pointer;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

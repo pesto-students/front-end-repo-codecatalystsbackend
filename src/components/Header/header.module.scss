@@ -1,0 +1,29 @@
+.HeaderContainer {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 22px;
+    color: #fff;
+
+    span {
+      color: var(--secondary);
+    }
+  }
+
+  a {
+    padding: 12px 48px;
+    background-color: var(--primary);
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+}
