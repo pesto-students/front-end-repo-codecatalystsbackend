@@ -43,7 +43,7 @@ function Dashboard() {
             <PreviousInterviewsLists list={interviews} />
           </div>
         )}
-        {interviews?.length <= 0 && (
+        {(!interviews || interviews?.length <= 0) && (
           <div className={styles.noInterviewContainer}>
             <p>Let's start with your first Interview practise</p>
             <div className={styles.buttonContainer}>
