@@ -10,7 +10,7 @@ import { AppContext } from "../../context/AppContext";
 function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { defaultInterviewSkills } = useContext(AppContext);
+  const { defaultInterviewSkills, loading } = useContext(AppContext);
   const [interviews, setInterviews] = useState(undefined);
   useEffect(() => {
     const fetchAllInterviews = async () => {
@@ -43,7 +43,7 @@ function Dashboard() {
             <PreviousInterviewsLists list={interviews} />
           </div>
         )}
-        {(!interviews || interviews?.length <= 0) && (
+        {((!interviews && !loading) || interviews?.length <= 0) && (
           <div className={styles.noInterviewContainer}>
             <p>Let's start with your first Interview practise</p>
             <div className={styles.buttonContainer}>

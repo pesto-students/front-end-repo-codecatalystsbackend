@@ -198,6 +198,7 @@ function AppProvider({ children }) {
         reviewQuestions,
         setReviewQuestions,
         defaultInterviewSkills,
+        loading,
       }}
     >
       {loading && <Loader />}
